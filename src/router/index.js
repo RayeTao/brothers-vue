@@ -37,7 +37,7 @@ export default new Router({
       component: UploadMedia
     },
     {
-      path: '/mediaList',
+      path: '/mediaList/:userId',
       name: 'mediaList',
       component: MediaList
     }

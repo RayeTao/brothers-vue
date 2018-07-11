@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="clock"  v-show="this.showMenu" >
+    <div id="clock"  v-show="this.showMenu && this.isLogin" >
       <p class="date">{{date}}</p>
       <p class="time">{{time}}</p>
     </div>
-    <div  v-show="this.showMenu">
+    <div  v-show="this.showMenu && this.isLogin">
       <el-menu
         :default-active="activeIndex"
         class="el-menu-demo"
@@ -20,7 +20,7 @@
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">个人照</template>
-          <el-menu-item :index="item.index" v-for="(item,index) in this.userList" :key="index" >{{item.userName}}</el-menu-item>
+          <el-menu-item :index="item.index" v-for="(item,index) in this.userList" :key="index" @click.native="mediaList(item.userId)">{{item.userName}}</el-menu-item>
         </el-submenu>
         <el-menu-item index="3">图片上传</el-menu-item>
         <el-menu-item index="4">修改密码</el-menu-item>
@@ -45,7 +45,8 @@
       activeIndex: '1',
       userList:[],
       userInfo:{},
-      showMenu:false
+      showMenu:false,
+      isLogin:false,
 
     }
   },
@@ -54,11 +55,20 @@
     this.updateTime();
     this.userList = []
     this.getUserList()
+    this.userInfo = getObjectByKey('userInfo')
+    console.log(this.userInfo)
+    if(!this.userInfo){
+      this.$router.replace({
+        name:'login'
+      })
+    }else{
+      this.showMenu = true
+    }
   },
   methods: {
     loginOn(){
      console.log("登录成功")
-      this.showMenu = true
+      this.isLogin = true
     },
     getUserList(){
       let vm = this;
@@ -84,7 +94,6 @@
       return (zero + num).slice(-digit);
     },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
       if(key == 4){
         this.$router.push({
           name: 'resetPsw'
@@ -94,6 +103,15 @@
           name: 'uploadMedia'
         })
       }
+    },
+    mediaList(value){
+      console.log("获取图片")
+      this.$router.push({
+        name:'mediaList',
+        params:{
+          userId: value
+        }
+      })
     }
   },
 
