@@ -30,13 +30,12 @@
     <router-view @login="loginOn"></router-view>
   </div>
 </template>
-<!--<script type="text/javascript" src="../../resources/js/vue.min.js"></script>-->
+
 
 <script>
   import {saveObject,getObjectByKey} from "./config/help";
   import axios from 'axios'
   export default {
-
   data () {
     return {
       date: '',
@@ -119,6 +118,7 @@
           userType: value
         }
       })
+
     }
   },
 

@@ -30,10 +30,6 @@
       <el-button size="small" type="primary"  @click.native="uploadMedia">上传</el-button>
       <el-button size="small" type="primary"  @click.native="resetMedia">继续上传</el-button>
     </div>
-<!--
-    <div style="margin:20px auto; width: 400px" v-show="this.showPercentage">
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="this.uploadPercentage"></el-progress>
-    </div>-->
 
   </div>
 </div>
@@ -111,8 +107,6 @@
           fileList:[],
           selectedType:'',
           files:[],
-          uploadPercentage:0,
-          showPercentage:false
         }
       },
       methods:{
@@ -120,6 +114,7 @@
           this.selectedType = this.selectedOptions[this.selectedOptions.length -1]
         },
         removeImg(file, fileList) {
+         this.fileList = fileList
         },
         previewImg(file) {
           this.dialogImageUrl = file.url;
@@ -143,7 +138,7 @@
             })
             return
           }
-          this.showPercentage = true
+
           for(let i=0;i<this.fileList.length;i++){
             let formData = new FormData;
             formData.append('file', this.fileList[i].raw);
@@ -155,8 +150,6 @@
             axios.post('/media/upload',formData, config)
               .then(function(response) {
                 if (response.data.success) {
-                  vm.uploadPercentage =(i+1)*100/vm.fileList.length
-                  console.log(vm.uploadPercentage )
                   if(i == vm.fileList.length-1){
                     vm.$message({
                       message: response.data.message,
@@ -174,13 +167,9 @@
                 console.log(error);
               })
           }
-
-
         },
         resetMedia(){
-          this.uploadPercentage = 0;
         this.fileList=[]
-        this.showPercentage = false
         },
         uploadLimit(){
           this.$message({

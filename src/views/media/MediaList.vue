@@ -28,11 +28,14 @@
     },
     methods: {
       init() {
+        console.log("init")
         let params = this.$route.params;
         this.userType = params && params.userType
         this.getMediaList(this.userType)
+
       },
       getMediaList(value) {
+        console.log("getMediaList")
         let vm = this
         this.mediaList = []
         axios.get("/media/getMediaList", {
