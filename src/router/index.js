@@ -8,6 +8,7 @@ const Home = () => import('../views/home/Home.vue').then(m => m.default);
 const ResetPassword = () => import('../views/info/ResetPassword.vue').then(m => m.default);
 const UploadMedia = () => import('../views/media/UploadMedia.vue').then(m => m.default);
 const MediaList = () => import('../views/media/MediaList.vue').then(m => m.default);
+const MediaDetail = () => import('../views/media/MediaDetail.vue').then(m => m.default);
 
 
 export default new Router({
@@ -37,9 +38,14 @@ export default new Router({
       component: UploadMedia
     },
     {
-      path: '/mediaList/:userId',
+      path: '/mediaList',
       name: 'mediaList',
       component: MediaList
+    },
+    {
+      path: '/mediaDetail',
+      name: 'mediaDetail',
+      component:MediaDetail
     }
 
   ]

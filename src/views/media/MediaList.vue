@@ -14,7 +14,7 @@
   export default {
     data() {
       return {
-        userId: 0,
+        userType: '',
         mediaList: [],
       }
     },
@@ -29,15 +29,15 @@
     methods: {
       init() {
         let params = this.$route.params;
-        this.userId = params && params.userId
-        this.getMediaList(this.userId)
+        this.userType = params && params.userType
+        this.getMediaList(this.userType)
       },
       getMediaList(value) {
         let vm = this
         this.mediaList = []
         axios.get("/media/getMediaList", {
           params: {
-            userId: value,
+            userType: value+'',
           }
         }).then(function (response) {
           if (response.data.success) {
@@ -45,6 +45,14 @@
           }
         }).catch(function (error) {})
       },
+      goDetail(item){
+        this.$router.push({
+          name: 'mediaDetail',
+          params:{
+            mediaInfo: item
+          }
+        })
+      }
     },
   }
 </script>

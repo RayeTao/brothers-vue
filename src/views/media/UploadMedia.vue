@@ -30,10 +30,10 @@
       <el-button size="small" type="primary"  @click.native="uploadMedia">上传</el-button>
       <el-button size="small" type="primary"  @click.native="resetMedia">继续上传</el-button>
     </div>
-
+<!--
     <div style="margin:20px auto; width: 400px" v-show="this.showPercentage">
       <el-progress :text-inside="true" :stroke-width="18" :percentage="this.uploadPercentage"></el-progress>
-    </div>
+    </div>-->
 
   </div>
 </div>
@@ -44,58 +44,63 @@
     export default {
       data() {
         return {
-          options: [{
-            value: '1',
+          options: [
+            {
+              value:'1',
+              label:'首页'
+            },
+            {
+            value: '2',
             label: '合照',
             children:[{
-              value:'1-1',
+              value:'2-1',
               label:'小合照'
             },
               {
-                value:'1-2',
+                value:'2-2',
                 label:'大合照'
               }]
           }, {
-            value: '2',
+            value: '3',
             label: '个人照',
             children:[{
-              value:'2-1',
+              value:'3-1',
               label:'李贤民'
             },
               {
-                value:'2-2',
+                value:'3-2',
                 label:'喻志立'
               },
               {
-                value:'2-3',
+                value:'3-3',
                 label:'郭会成'
               },
               {
-                value:'2-4',
+                value:'3-4',
                 label:'陶然'
               },
               {
-                value:'2-5',
+                value:'3-5',
                 label:'易朝军'
               },
               {
-                value:'2-6',
+                value:'3-6',
                 label:'张杨'
               },
               {
-                value:'2-7',
+                value:'3-7',
                 label:'马山川'
               },
               {
-                value:'2-8',
+                value:'3-8',
                 label:'秦丰伟'
               },
               {
-                value:'2-9',
+                value:'3-9',
                 label:'刘玺'
               },
               {
-                value:'2-10',
+                value:'3-10',
                 label:'关磊'
               }
             ]
@@ -113,13 +118,10 @@
       methods:{
         getOptions(){
           this.selectedType = this.selectedOptions[this.selectedOptions.length -1]
-          console.log(this.selectedType)
         },
         removeImg(file, fileList) {
-          console.log(file, fileList);
         },
         previewImg(file) {
-          console.log(file)
           this.dialogImageUrl = file.url;
           this.dialogVisible = true;
         },

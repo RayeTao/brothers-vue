@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="clock"  v-show="this.showMenu && this.isLogin" >
+    <div id="clock"  v-show="this.showMenu " >
       <p class="date">{{date}}</p>
       <p class="time">{{time}}</p>
     </div>
-    <div  v-show="this.showMenu && this.isLogin">
+    <div  v-show="this.showMenu ">
       <el-menu
         :default-active="activeIndex"
         class="el-menu-demo"
@@ -13,17 +13,18 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b">
-        <el-submenu index="1">
-          <template slot="title">合照</template>
-          <el-menu-item index="1-1">小合照</el-menu-item>
-          <el-menu-item index="1-2">大合照</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="1">首页</el-menu-item>
         <el-submenu index="2">
-          <template slot="title">个人照</template>
-          <el-menu-item :index="item.index" v-for="(item,index) in this.userList" :key="index" @click.native="mediaList(item.userId)">{{item.userName}}</el-menu-item>
+          <template slot="title">合照</template>
+          <el-menu-item index="2-1" @click.native="mediaList('2-1')">小合照</el-menu-item>
+          <el-menu-item index="2-2" @click.native="mediaList('2-2')">大合照</el-menu-item>
         </el-submenu>
-        <el-menu-item index="3">图片上传</el-menu-item>
-        <el-menu-item index="4">修改密码</el-menu-item>
+        <el-submenu index="3">
+          <template slot="title">个人照</template>
+          <el-menu-item :index="item.index" v-for="(item,index) in this.userList" :key="index" @click.native="mediaList(item.index)">{{item.userName}}</el-menu-item>
+        </el-submenu>
+        <el-menu-item index="4">图片上传</el-menu-item>
+        <el-menu-item index="5">修改密码</el-menu-item>
       </el-menu>
     </div>
     <router-view @login="loginOn"></router-view>
@@ -61,13 +62,14 @@
       this.$router.replace({
         name:'login'
       })
-    }else{
+    }/*else{
       this.showMenu = true
-    }
+    }*/
   },
   methods: {
     loginOn(){
      console.log("登录成功")
+      this.showMenu = true
       this.isLogin = true
     },
     getUserList(){
@@ -94,22 +96,27 @@
       return (zero + num).slice(-digit);
     },
     handleSelect(key, keyPath) {
-      if(key == 4){
+      console.log(key)
+      if(key == 1){
         this.$router.push({
-          name: 'resetPsw'
+          name: 'home'
         })
-      }else if(key == 3){
+      }else if(key == 4){
         this.$router.push({
           name: 'uploadMedia'
+        })
+      }else if(key == 5){
+        this.$router.push({
+          name: 'resetPsw'
         })
       }
     },
     mediaList(value){
-      console.log("获取图片")
+      console.log("获取图片" + value)
       this.$router.push({
         name:'mediaList',
         params:{
-          userId: value
+          userType: value
         }
       })
     }
