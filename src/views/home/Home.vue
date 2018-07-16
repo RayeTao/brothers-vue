@@ -28,6 +28,8 @@
         axios.get("/media/getMediaList", {
           params: {
             userType: value+'',
+            pageNo: 1,
+            pageSize: 30
           }
         }).then(function (response) {
           if (response.data.success) {

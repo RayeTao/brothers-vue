@@ -25,6 +25,7 @@
         </el-submenu>
         <el-menu-item index="4">图片上传</el-menu-item>
         <el-menu-item index="5">修改密码</el-menu-item>
+        <el-menu-item index="6">个人卡片</el-menu-item>
       </el-menu>
     </div>
     <router-view @login="loginOn"></router-view>
@@ -107,6 +108,13 @@
       }else if(key == 5){
         this.$router.push({
           name: 'resetPsw'
+        })
+      }else if(key == 6){
+        this.$router.push({
+          name: 'userCard',
+          params:{
+            userList: this.userList
+          }
         })
       }
     },

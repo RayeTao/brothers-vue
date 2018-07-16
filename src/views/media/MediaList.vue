@@ -1,9 +1,21 @@
 <template>
   <div style="margin-top: 50px">
-    <div v-for="(item,index) in this.mediaList" :key="index" style="text-align: center;width: 100%;margin: 0 auto">
+   <div style="text-align: center;width: 100%;margin: 0 auto;">
+    <div v-for="(item,index) in this.mediaList" :key="index" >
       <div class="big-img">
         <img  :src="item.mediaUrl" width="300px" height="240px" />
      </div>
+    </div>
+    </div>
+    <div class="page" v-show="this.mediaList.length>0">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :page-size="pageSize"
+        :pager-count="11"
+        :total="totalCount"
+        @current-change="handleCurrentChange">
+      </el-pagination>
     </div>
   </div>
 </template>
@@ -16,6 +28,9 @@
       return {
         userType: '',
         mediaList: [],
+        totalCount: 0,
+        pageNo: 1,
+        pageSize: 3
       }
     },
     watch: {
@@ -31,20 +46,23 @@
         console.log("init")
         let params = this.$route.params;
         this.userType = params && params.userType
-        this.getMediaList(this.userType)
+        this.getMediaList()
 
       },
-      getMediaList(value) {
+      getMediaList() {
         console.log("getMediaList")
         let vm = this
         this.mediaList = []
         axios.get("/media/getMediaList", {
           params: {
-            userType: value+'',
+            userType: vm.userType+'',
+            pageNo: vm.pageNo,
+            pageSize: vm.pageSize
           }
         }).then(function (response) {
           if (response.data.success) {
             vm.mediaList.push.apply(vm.mediaList,response.data.data.resultList)
+            vm.totalCount = response.data.data.totalCount
           }
         }).catch(function (error) {})
       },
@@ -55,6 +73,11 @@
             mediaInfo: item
           }
         })
+      },
+      handleCurrentChange(value) {
+        console.log(`当前页: ${value}`);
+        this.pageNo = value
+        this.getMediaList()
       }
     },
   }
@@ -75,5 +98,10 @@
   }
   .big-img img:hover{
     transform: scale(1.3);
+  }
+  .page{
+    clear: both;
+    text-align: center;
+    padding-top: 50px;
   }
 </style>

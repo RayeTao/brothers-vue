@@ -9,6 +9,7 @@ const ResetPassword = () => import('../views/info/ResetPassword.vue').then(m => 
 const UploadMedia = () => import('../views/media/UploadMedia.vue').then(m => m.default);
 const MediaList = () => import('../views/media/MediaList.vue').then(m => m.default);
 const MediaDetail = () => import('../views/media/MediaDetail.vue').then(m => m.default);
+const UserCard = () => import('../views/info/UserCard.vue').then(m => m.default);
 
 
 export default new Router({
@@ -45,7 +46,12 @@ export default new Router({
     {
       path: '/mediaDetail',
       name: 'mediaDetail',
-      component:MediaDetail
+      component: MediaDetail
+    },
+    {
+      path: '/userCard',
+      name: 'userCard',
+      component: UserCard
     }
 
   ]
