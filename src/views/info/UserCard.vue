@@ -5,10 +5,9 @@
         <el-card class="box-card" shadow="hover">
           <div >
             <p style="font-size: 20px;color: #409eff;text-align: left">{{ item.userName }}</p>
-            <p class="text-info">性别:<span >{{ item.gender }}</span></p>
-            <p class="text-info">生日:<span >{{ item.birthday }}</span></p>
-            <p class="text-info">手机号:<span >{{ item.phone }}</span></p>
-            <p class="text-info">地址:<span >{{ item.address }}</span></p>
+            <p class="text-info">生日:<span  style="margin-left: 10px">{{ item.birthday  }}</span></p>
+            <p class="text-info">手机号:<span style="margin-left: 10px">{{ item.phone }}</span></p>
+            <p class="text-info">地址:<span style="margin-left: 10px">{{ item.address }}</span></p>
           </div>
         </el-card>
       </div>
@@ -17,12 +16,19 @@
 </template>
 
 <script>
-    export default {
+  import {TimestampToDate} from "../../config/DateUtil";
+
+  export default {
         data(){
           return{
             userList: []
           }
         },
+    filters:{
+      filterDate:function (value) {
+        return TimestampToDate(value)
+      }
+    },
       created(){
           let params = this.$route.params
           this.userList = params && params.userList

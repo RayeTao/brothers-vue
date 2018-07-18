@@ -1,13 +1,13 @@
 <template>
     <div style="margin-top: 100px;text-align: center">
       <div style=";width: 400px;margin: 15px auto">
-      <el-input v-model="oldPsw" placeholder="请输入原密码" ></el-input>
+      <el-input v-model="oldPsw" type="password" placeholder="请输入原密码" ></el-input>
       </div>
       <div style="margin: 15px auto;width: 400px">
-      <el-input v-model="newPswFirst" placeholder="请输入新密码" ></el-input>
+      <el-input v-model="newPswFirst" type="password" placeholder="请输入新密码" ></el-input>
       </div>
         <div style="margin: 15px auto;width: 400px">
-      <el-input v-model="newPswSecond" placeholder="请确认新密码"></el-input>
+      <el-input v-model="newPswSecond" type="password" placeholder="请确认新密码"></el-input>
         </div>
       <div style="margin-top: 15px;">
         <el-button type="primary" @click="resetPsw()" :plain="true">提交</el-button>
@@ -41,13 +41,13 @@ let userInfo = getObjectByKey('userInfo')
             }).then(function (response) {
               if(response.data.code == 0){
                 _this.$message({
-                  message: response.data.msg,
+                  message: response.data.message,
                   type: 'success'
                 });
                 saveObject("userInfo",response.data.data.data)
               }else if(response.data.code == -1){
                 _this.$message({
-                  message: response.data.msg,
+                  message: response.data.message,
                   type: 'warning'
                 });
               }
