@@ -1,33 +1,132 @@
 <template>
     <div>
       <div style="text-align: center;margin-top: 50px">
-        <img :src="this.mediaInfo.mediaUrl"  width="300px" height="240px">
+        <img :src="this.mediaInfo.mediaUrl"  width="700px" height="440px">
       </div>
-      <div style="margin-top: 30px;float: left">
-        <p style="font-size: 20px;color: #3faaf5">评论</p>
+      <div style="text-align: center; margin-top: 30px">
+        <div class="text-flex">
+          <img src="../../images/download.png" class="text-img" @click="downloadMedia"/>
+        </div>
+        <div class="text-flex">
+          <img src="../../images/comment.png" class="text-img" @click="commentMedia"/>
+        </div>
+        <div class="text-flex">
+          <img :src="collectLog(this.mediaInfo.collectFlag)" class="text-img" style="margin-right: 0" @click="collectMedia"/>
+          <span  style="font-size: 20px;vertical-align: middle;margin-left: 5px">{{mediaInfo.collectCount}}</span>
+        </div>
+        <div class="text-flex">
+          <img src="../../images/delete.png" class="text-img" style="margin-left: 60px" @click="deleteMedia"/>
+        </div>
+      </div>
+      <div style="margin:30px auto;width: 50%">
+        <p style="font-size: 20px;color: #3faaf5;text-align: left">评论</p>
         <div style="border: solid 1px #3faaf5;width: 100%"></div>
-        <p>陶然</p>
-        <p>真出</p>
-        <p>2018-07-12</p>
+        <div style="text-align: left;margin: 10px" v-for="n in 3">
+          <p class="text-name">陶然</p>
+          <p class="text-content">真出</p>
+          <p class="text-time">2018-07-12</p>
+          <!--<p style="text-align: right">回复</p>-->
+          <div style="border: dotted  0.5px #999999;margin-top: 10px"></div>
+        </div>
+
       </div>
     </div>
 </template>
 
 <script>
-    export default {
+  import axios from 'axios'
+  import {saveObject,getObjectByKey} from "../../config/help";
+
+  export default {
         data(){
           return{
-            mediaInfo:{}
+            mediaInfo:{},
+            userInfo: {}
           }
         },
       created(){
         let params = this.$route.params
         this.mediaInfo  = params && params.mediaInfo
+        this.userInfo = getObjectByKey('userInfo')
         console.log(this.mediaInfo)
+      },
+      methods:{
+        collectLog: function (value) {
+          if(value == 0) {
+            return require('../../images/collect_before.png')
+          }else if(value ==1){
+            return require('../../images/collect_after.png')
+          }
+        },
+        downloadMedia: function () {
+          let vm = this;
+
+        },
+
+        commentMedia: function () {
+
+        },
+        collectMedia: function () {
+          let vm = this
+          axios.get('/media/collectMedia',{
+            params:{
+              mediaId: vm.mediaInfo.mediaId,
+              userId: vm.userInfo.userId
+            }
+          })
+
+        },
+        deleteMedia: function () {
+          let vm = this
+          axios.get('/media/deleteMedia',{
+            params:{
+              mediaId: vm.mediaInfo.mediaId,
+             localMediaPath: vm.mediaInfo.localMediaPath
+            }
+          }).then(function (response) {
+            if(response.data.success){
+              vm.$message({
+                message: response.data.message,
+                type: 'success'
+              })
+              vm.$router.go(-1)
+            }
+
+          }).catch(function (error) {
+
+          })
+        }
+
       }
     }
 </script>
 
 <style scoped>
-
+.text-name{
+  font-size: 14px;
+  color: #409eff;
+  margin-top: 10px;
+}
+  .text-content{
+    font-size: 14px;
+    font-weight: bold;
+    color: #666666;
+    margin-top: 10px;
+  }
+  .text-time{
+    font-size: 10px;
+    margin-top: 10px;
+    color: #999999;
+  }
+  .text-img{
+    width :30px;
+    height: 30px;
+    vertical-align: middle;
+    margin: 30px;
+  }
+  .text-flex{
+    display: inline;
+    width: 30px;
+    height: 30px;
+  }
 </style>

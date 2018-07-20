@@ -20,7 +20,8 @@
       :on-exceed='uploadLimit'
       :http-request='uploadMedia'
       :on-preview="previewImg"
-      :on-remove="removeImg">
+      :on-remove="removeImg"
+      v-loading="loading">
      <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
@@ -28,7 +29,7 @@
     </el-dialog>
     <div style="margin-top: 50px">
       <el-button size="small" type="primary"  @click.native="uploadMedia">上传</el-button>
-      <el-button size="small" type="primary"  @click.native="resetMedia">继续上传</el-button>
+      <el-button size="small" type="primary"  @click.native="resetMedia" v-show="fileList.length>0">继续上传</el-button>
     </div>
 
   </div>
@@ -107,6 +108,7 @@
           fileList:[],
           selectedType:'',
           files:[],
+          loading: false
         }
       },
       methods:{
@@ -147,6 +149,7 @@
               'Content-Type': 'multipart/form-data'
             }
             let vm = this;
+            vm.loading = true
             axios.post('/media/upload',formData, config)
               .then(function(response) {
                 if (response.data.success) {
@@ -155,6 +158,7 @@
                       message: response.data.message,
                       type: 'success'
                     });
+                    vm.loading = false
                   }
                 }else{
                   vm.$message({

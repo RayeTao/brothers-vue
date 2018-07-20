@@ -1,11 +1,11 @@
 <template>
   <div style="margin-top: 50px">
-   <div style="text-align: center;width: 100%;margin: 0 auto;">
-    <div v-for="(item,index) in this.mediaList" :key="index" >
-      <div class="big-img">
-        <img  :src="item.mediaUrl" width="300px" height="240px" @click="goDetail(item)" />
-     </div>
-    </div>
+    <div style="text-align: center;width: 100%;margin: 0 auto;">
+      <div v-for="(item,index) in this.mediaList" :key="index" >
+        <div class="big-img">
+          <img  :src="item.mediaUrl" width="300px" height="240px" @click="goDetail(item)" />
+        </div>
+      </div>
     </div>
     <div class="page" v-show="this.mediaList.length>0">
       <el-pagination
@@ -22,6 +22,7 @@
 
 <script>
   import axios from 'axios'
+  import {getObjectByKey} from "../../config/help";
 
   export default {
     data() {
@@ -30,7 +31,8 @@
         mediaList: [],
         totalCount: 0,
         pageNo: 1,
-        pageSize: 9
+        pageSize: 9,
+        userInfo: {}
       }
     },
     watch: {
@@ -43,19 +45,19 @@
     },
     methods: {
       init() {
-        console.log("init")
+        this.userInfo = getObjectByKey('userInfo')
         let params = this.$route.params;
         this.userType = params && params.userType
-        this.getMediaList()
+        this.getCollectMediaList()
+
 
       },
-      getMediaList() {
-        console.log("getMediaList")
+      getCollectMediaList() {
         let vm = this
         this.mediaList = []
-        axios.get("/media/getMediaList", {
+        axios.get("/media/getCollectMediaList", {
           params: {
-            userType: vm.userType+'',
+            userId: vm.userInfo.userId,
             pageNo: vm.pageNo,
             pageSize: vm.pageSize
           }

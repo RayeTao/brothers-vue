@@ -26,6 +26,7 @@
         <el-menu-item index="4">图片上传</el-menu-item>
         <el-menu-item index="5">修改密码</el-menu-item>
         <el-menu-item index="6">个人卡片</el-menu-item>
+        <el-menu-item index="7">我的收藏</el-menu-item>
       </el-menu>
     </div>
     <router-view @login="loginOn"></router-view>
@@ -68,7 +69,6 @@
   },
   methods: {
     loginOn(){
-     console.log("登录成功")
       this.showMenu = true
       this.isLogin = true
     },
@@ -116,10 +116,11 @@
             userList: this.userList
           }
         })
+      }else if(key==7){
+        this.$router.push({name:'collectMediaList'})
       }
     },
     mediaList(value){
-      console.log("获取图片" + value)
       this.$router.push({
         name:'mediaList',
         params:{

@@ -10,6 +10,7 @@ const UploadMedia = () => import('../views/media/UploadMedia.vue').then(m => m.d
 const MediaList = () => import('../views/media/MediaList.vue').then(m => m.default);
 const MediaDetail = () => import('../views/media/MediaDetail.vue').then(m => m.default);
 const UserCard = () => import('../views/info/UserCard.vue').then(m => m.default);
+const CollectMediaList = () => import('../views/media/CollectMediaList').then(m => m.default);
 
 
 export default new Router({
@@ -52,6 +53,11 @@ export default new Router({
       path: '/userCard',
       name: 'userCard',
       component: UserCard
+    },
+    {
+      path: '/collectMediaList',
+      name: 'collectMediaList',
+      component: CollectMediaList
     }
 
   ]
