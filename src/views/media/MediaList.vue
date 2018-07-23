@@ -22,6 +22,7 @@
 
 <script>
   import axios from 'axios'
+  import {getObjectByKey} from "../../config/help";
 
   export default {
     data() {
@@ -30,7 +31,8 @@
         mediaList: [],
         totalCount: 0,
         pageNo: 1,
-        pageSize: 9
+        pageSize: 9,
+        userInfo: {}
       }
     },
     watch: {
@@ -43,18 +45,18 @@
     },
     methods: {
       init() {
-        console.log("init")
+        this.userInfo = getObjectByKey('userInfo')
         let params = this.$route.params;
         this.userType = params && params.userType
         this.getMediaList()
 
       },
       getMediaList() {
-        console.log("getMediaList")
         let vm = this
         this.mediaList = []
         axios.get("/media/getMediaList", {
           params: {
+            userId: vm.userInfo.userId,
             userType: vm.userType+'',
             pageNo: vm.pageNo,
             pageSize: vm.pageSize
@@ -75,7 +77,6 @@
         })
       },
       handleCurrentChange(value) {
-        console.log(`当前页: ${value}`);
         this.pageNo = value
         this.getMediaList()
       }

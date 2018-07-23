@@ -21,10 +21,10 @@
       <div style="margin:30px auto;width: 50%">
         <p style="font-size: 20px;color: #3faaf5;text-align: left">评论</p>
         <div style="border: solid 1px #3faaf5;width: 100%"></div>
-        <div style="text-align: left;margin: 10px" v-for="n in 3">
-          <p class="text-name">陶然</p>
-          <p class="text-content">真出</p>
-          <p class="text-time">2018-07-12</p>
+        <div style="text-align: left;margin: 10px" v-for=" item in commentList">
+          <p class="text-name">{{item.userName}}</p>
+          <p class="text-content">{{item.content}}</p>
+          <p class="text-time">{{item.createTime | dateFilter}}</p>
           <!--<p style="text-align: right">回复</p>-->
           <div style="border: dotted  0.5px #999999;margin-top: 10px"></div>
         </div>
@@ -36,20 +36,30 @@
 <script>
   import axios from 'axios'
   import {saveObject,getObjectByKey} from "../../config/help";
+  import {TimestampToDate} from "../../config/DateUtil";
 
   export default {
         data(){
           return{
             mediaInfo:{},
-            userInfo: {}
+            userInfo: {},
+            commentList: [],
           }
         },
       created(){
         let params = this.$route.params
         this.mediaInfo  = params && params.mediaInfo
         this.userInfo = getObjectByKey('userInfo')
+        this.getCommentList()
         console.log(this.mediaInfo)
       },
+    filters:{
+      dateFilter:function(timestamp){
+        if(timestamp){
+          return TimestampToDate(timestamp)
+        }
+      }
+    },
       methods:{
         collectLog: function (value) {
           if(value == 0) {
@@ -68,7 +78,38 @@
         },
 
         commentMedia: function () {
+          let vm = this
+          vm.$prompt( '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputType: 'textarea',
+            inputPlaceholder:'请输入评论内容'
+          }).then(({ value }) => {
+            if(value == null || value.trim()== ''){
+              vm.$message({
+                message: "评论内容不能为空",
+                type: 'info'
+              })
+            }else{
+              axios.get('/media/commentMedia',{
+                params:{
+                  userId: vm.userInfo.userId,
+                  mediaId: vm.mediaInfo.mediaId,
+                  content: value
+                }
+              }).then(function (response) {
+                if(response.data.success){
+                  vm.$message({
+                    message: response.data.message,
+                    type: 'success'
+                  })
+                }
+              })
+            }
 
+          }).catch(() => {
+
+          });
         },
         collectMedia: function () {
           let vm = this
@@ -124,6 +165,20 @@
 
           }).catch(function (error) {
 
+          })
+        },
+        getCommentList: function () {
+          let vm = this
+          axios.get('/media/getCommentList',{
+            params:{
+              mediaId: vm.mediaInfo.mediaId,
+              pageNo: 1,
+              pageSize: 10
+            }
+          }).then(function (respones) {
+            if(respones.data.success){
+              vm.commentList.push.apply(vm.commentList,respones.data.data.resultList)
+            }
           })
         }
 

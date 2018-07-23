@@ -19,7 +19,7 @@
 </style>
 <script>
   import axios from 'axios'
-  import {saveObject} from "../../config/help";
+  import {saveObject,removeObject} from "../../config/help";
 
   export default {
   name: 'hello',
@@ -56,6 +56,7 @@
          }
        }).then(function (response) {
          if(response.data.code == 0) {
+           removeObject('userInfo')
            saveObject('userInfo',response.data.data.data)
            _this.$router.push({
              name: 'home'

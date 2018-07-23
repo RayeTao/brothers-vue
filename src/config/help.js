@@ -12,6 +12,10 @@ function getObjectByKey(key) {
   }
 
 }
+
+function removeObject(key) {
+ localStorage.removeItem(key)
+}
 export {
-  saveObject,getObjectByKey
+  saveObject,getObjectByKey,removeObject
 }
