@@ -5,7 +5,7 @@
       </div>
       <div style="text-align: center; margin-top: 30px">
         <div class="text-flex">
-          <img src="../../images/download.png" class="text-img" @click="downloadMedia"/>
+          <a :href="this.mediaInfo.mediaUrl" download="图片"><img src="../../images/download.png" class="text-img" @click="downloadMedia"/></a>
         </div>
         <div class="text-flex">
           <img src="../../images/comment.png" class="text-img" @click="commentMedia"/>
@@ -59,7 +59,11 @@
           }
         },
         downloadMedia: function () {
-          let vm = this;
+       //window.open(this.mediaInfo.mediaUrl,'_blank')
+          let iframe = document.createElement("iframe")
+          iframe.style.display = "none";
+          iframe.src = this.mediaInfo.mediaUrl;
+          document.body.appendChild(iframe);
 
         },
 
@@ -68,12 +72,38 @@
         },
         collectMedia: function () {
           let vm = this
-          axios.get('/media/collectMedia',{
-            params:{
-              mediaId: vm.mediaInfo.mediaId,
-              userId: vm.userInfo.userId
-            }
-          })
+          if(this.mediaInfo.collectFlag == 1){
+            axios.get('/media/cancelCollectMedia',{
+              params:{
+                mediaId: vm.mediaInfo.mediaId
+              }
+            }).then(function (response) {
+              if(response.data.success){
+                vm.$message({
+                  message: response.data.message,
+                  type: 'success'
+                })
+                vm.$router.go(-1)
+              }
+            })
+          }else if(this.mediaInfo.collectFlag == 0){
+            axios.get('/media/collectMedia',{
+              params:{
+                mediaId: vm.mediaInfo.mediaId,
+                userId: vm.userInfo.userId
+              }
+            }).then(function (response) {
+              if(response.data.success){
+                vm.$message({
+                  message: response.data.message,
+                  type: 'success'
+                })
+                vm.mediaInfo.collectFlag = 1
+                vm.mediaInfo.collectCount++
+              }
+            })
+          }
+
 
         },
         deleteMedia: function () {
