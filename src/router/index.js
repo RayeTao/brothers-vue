@@ -11,6 +11,7 @@ const MediaList = () => import('../views/media/MediaList.vue').then(m => m.defau
 const MediaDetail = () => import('../views/media/MediaDetail.vue').then(m => m.default);
 const UserCard = () => import('../views/info/UserCard.vue').then(m => m.default);
 const CollectMediaList = () => import('../views/media/CollectMediaList').then(m => m.default);
+const EditInfo = () => import('../views/info/EditInfo').then(m => m.default);
 
 
 export default new Router({
@@ -58,6 +59,11 @@ export default new Router({
       path: '/collectMediaList',
       name: 'collectMediaList',
       component: CollectMediaList
+    },
+    {
+      path: '/editInfo',
+      name: 'editInfo',
+      component: EditInfo
     }
 
   ]

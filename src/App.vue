@@ -35,7 +35,7 @@
 
 
 <script>
-  import {saveObject,getObjectByKey} from "./config/help";
+  import {saveObject,getObjectByKey,removeObject} from "./config/help";
   import axios from 'axios'
   export default {
   data () {
@@ -59,11 +59,11 @@
     this.getUserList()
     this.userInfo = getObjectByKey('userInfo')
     console.log(this.userInfo)
-    if(!this.userInfo){
-      this.$router.replace({
+  /*  if(!this.userInfo){
+      /!*this.$router.replace({
         name:'login'
-      })
-    }/*else{
+      })*!/
+    }else{
       this.showMenu = true
     }*/
   },

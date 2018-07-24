@@ -10,15 +10,19 @@
   </div>
 </template>
 <script>
-  import axios from 'axios'
+  import axios from 'axios';
+  import {getObjectByKey} from "../../config/help";
+
   export default {
     data() {
       return {
         mediaList: [],
-        userType:'1'
+        userType:'1',
+        userInfo: {}
       }
     },
     created(){
+      this.userInfo = getObjectByKey('userInfo')
       this.getMediaList(this.userType)
     },
     methods: {
@@ -27,6 +31,7 @@
         this.mediaList = []
         axios.get("/media/getMediaList", {
           params: {
+            userId: vm.userInfo.userId,
             userType: value+'',
             pageNo: 1,
             pageSize: 30

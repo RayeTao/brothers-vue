@@ -21,12 +21,20 @@
       <div style="margin:30px auto;width: 50%">
         <p style="font-size: 20px;color: #3faaf5;text-align: left">评论</p>
         <div style="border: solid 1px #3faaf5;width: 100%"></div>
+        <div style="text-align: center;margin-top: 20px" v-show="!commentList || commentList.length<=0">暂无评论</div>
         <div style="text-align: left;margin: 10px" v-for=" item in commentList">
           <p class="text-name">{{item.userName}}</p>
           <p class="text-content">{{item.content}}</p>
           <p class="text-time">{{item.createTime | dateFilter}}</p>
           <!--<p style="text-align: right">回复</p>-->
           <div style="border: dotted  0.5px #999999;margin-top: 10px"></div>
+        </div>
+        <div style="text-align: center;margin-top: 20px" v-show="commentList && commentList.length>0">
+          <el-pagination
+            layout="prev, pager, next"
+            :total="totalCount"
+            @current-change="handleCurrentChange">
+          </el-pagination>
         </div>
 
       </div>
@@ -44,6 +52,8 @@
             mediaInfo:{},
             userInfo: {},
             commentList: [],
+            totalCount: 0,
+            pageNo: 1
           }
         },
       created(){
@@ -103,6 +113,7 @@
                     message: response.data.message,
                     type: 'success'
                   })
+                  vm.getCommentList()
                 }
               })
             }
@@ -124,7 +135,8 @@
                   message: response.data.message,
                   type: 'success'
                 })
-                vm.$router.go(-1)
+                vm.mediaInfo.collectFlag = 0
+                vm.mediaInfo.collectCount--
               }
             })
           }else if(this.mediaInfo.collectFlag == 0){
@@ -169,17 +181,23 @@
         },
         getCommentList: function () {
           let vm = this
+          this.commentList = []
           axios.get('/media/getCommentList',{
             params:{
               mediaId: vm.mediaInfo.mediaId,
-              pageNo: 1,
+              pageNo: vm.pageNo,
               pageSize: 10
             }
           }).then(function (respones) {
             if(respones.data.success){
               vm.commentList.push.apply(vm.commentList,respones.data.data.resultList)
+              vm.totalCount = respones.data.data.totalCount
             }
           })
+        },
+        handleCurrentChange(value) {
+          this.pageNo = value
+          this.getCommentList()
         }
 
       }
