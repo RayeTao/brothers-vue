@@ -165,6 +165,7 @@
                     message: response.data.message,
                     type: 'error'
                   });
+                  vm.loading = false
                 }
               })
               .catch(function(error) {

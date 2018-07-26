@@ -4,9 +4,9 @@
         <img :src="this.mediaInfo.mediaUrl"  width="700px" height="440px">
       </div>
       <div style="text-align: center; margin-top: 30px">
-        <div class="text-flex">
-          <a :href="this.mediaInfo.mediaUrl" download="图片"><img src="../../images/download.png" class="text-img" @click="downloadMedia"/></a>
-        </div>
+       <!-- <div class="text-flex">
+          <img src="../../images/download.png" class="text-img" @click="downloadMedia"/>
+        </div>-->
         <div class="text-flex">
           <img src="../../images/comment.png" class="text-img" @click="commentMedia"/>
         </div>
@@ -79,11 +79,14 @@
           }
         },
         downloadMedia: function () {
-       //window.open(this.mediaInfo.mediaUrl,'_blank')
-          let iframe = document.createElement("iframe")
-          iframe.style.display = "none";
-          iframe.src = this.mediaInfo.mediaUrl;
-          document.body.appendChild(iframe);
+          let vm = this
+          axios.get('/media/downloadMedia',{
+            params:{
+              filePath: vm.mediaInfo.localMediaPath
+            }
+          }).then(function (response) {
+            console.log(response)
+          })
 
         },
 

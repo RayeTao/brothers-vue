@@ -27,6 +27,7 @@
         <el-menu-item index="5">修改密码</el-menu-item>
         <el-menu-item index="6">个人卡片</el-menu-item>
         <el-menu-item index="7">我的收藏</el-menu-item>
+        <el-menu-item  v-show="userInfo.userName=='陶然'" index="8">电费计算</el-menu-item>
       </el-menu>
     </div>
     <router-view @login="loginOn"></router-view>
@@ -57,8 +58,7 @@
     this.updateTime();
     this.userList = []
     this.getUserList()
-    this.userInfo = getObjectByKey('userInfo')
-    console.log(this.userInfo)
+
   /*  if(!this.userInfo){
       /!*this.$router.replace({
         name:'login'
@@ -71,6 +71,8 @@
     loginOn(){
       this.showMenu = true
       this.isLogin = true
+      this.userInfo = getObjectByKey('userInfo')
+      console.log(this.userInfo)
     },
     getUserList(){
       let vm = this;
@@ -118,6 +120,8 @@
         })
       }else if(key==7){
         this.$router.push({name:'collectMediaList'})
+      }else if(key == 8){
+        this.$router.push({name:'electricity'})
       }
     },
     mediaList(value){

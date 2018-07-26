@@ -30,6 +30,9 @@
       password: ''
     }
   },
+    created(){
+      removeObject('userInfo')
+    },
   methods:{
      login: function(){
       if(!this.username){
@@ -56,7 +59,7 @@
          }
        }).then(function (response) {
          if(response.data.code == 0) {
-           removeObject('userInfo')
+           //removeObject('userInfo')
            saveObject('userInfo',response.data.data.data)
            _this.$router.push({
              name: 'home'

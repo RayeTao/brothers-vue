@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="width: 500px;margin: 20px auto;">
-      <el-carousel height="300px">
+      <el-carousel height="300px" :interval="2000">
         <el-carousel-item v-for="(item,index) in this.mediaList" :key="index">
           <img :src="item.mediaUrl" width="500px" height="300px">
         </el-carousel-item>
