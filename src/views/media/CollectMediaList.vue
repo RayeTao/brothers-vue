@@ -3,7 +3,7 @@
     <div style="text-align: center;width: 100%;margin: 0 auto;">
       <div v-for="(item,index) in this.mediaList" :key="index" >
         <div class="big-img">
-          <img  :src="item.mediaUrl" width="300px" height="240px" @click="goDetail(item)" />
+          <img  :src="item.thumbMediaUrl" width="300px" height="240px" @click="goDetail(item)" />
         </div>
       </div>
     </div>
